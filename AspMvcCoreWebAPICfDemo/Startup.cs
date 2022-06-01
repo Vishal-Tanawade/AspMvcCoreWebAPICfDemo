@@ -1,3 +1,4 @@
+using AspMvcCoreWebAPICfDemo.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 namespace AspMvcCoreWebAPICfDemo
 {
     public class Startup
@@ -25,8 +26,11 @@ namespace AspMvcCoreWebAPICfDemo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            
             services.AddControllers();
+            services.AddDbContextPool<AppDBContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("MyDBConnection"))
+                ) ;
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AspMvcCoreWebAPICfDemo", Version = "v1" });
